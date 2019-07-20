@@ -1,4 +1,4 @@
-package com.sl.kotlin
+package com.sl.kotlin.start
 
 fun main() {
     var a=1

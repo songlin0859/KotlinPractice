@@ -1,7 +1,7 @@
-package com.sl.kotlin;
+package com.sl.kotlin.start;
 
 fun main() {
-    var user:User?=User("Lin",28)
+    var user: User?= User("Lin", 28)
     if (user==null){
         println("user is null")
     }

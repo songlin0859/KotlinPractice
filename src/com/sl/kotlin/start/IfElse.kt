@@ -1,4 +1,4 @@
-package com.sl.kotlin
+package com.sl.kotlin.start
 
 fun main(){
     val timeMillis = System.currentTimeMillis().toInt()
