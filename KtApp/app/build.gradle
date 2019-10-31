@@ -20,7 +20,7 @@ android {
     }
 
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/proguard/coroutines.pro'
     }
 }
 

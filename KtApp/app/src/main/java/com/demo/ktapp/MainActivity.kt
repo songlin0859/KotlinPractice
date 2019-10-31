@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadArticles() {
-        toast("开始加载数据")
+        toast("协程-开始加载数据")
         /*getWanService().wxarticle().enqueue(object : Callback<DataWrapper<List<ArticleBean>>> {
             override fun onResponse(
                 call: Call<DataWrapper<List<ArticleBean>>>,
@@ -74,15 +74,27 @@ class MainActivity : AppCompatActivity() {
 
         }*/
 
-        runBlocking {
+        /*runBlocking {
             launch {
                 val articlse = getArticlse()
-                toast("加载成功")
+                toast("协程-加载成功")
                 articlse?.let {
                     mList.clear()
                     mList.addAll(articlse)
                     mAdapter.notifyDataSetChanged()
                 }
+            }
+        }*/
+
+
+        runBlocking {
+            val deferred = async { getArticlse() }
+            toast("协程- await -加载成功")
+            val list = deferred.await()
+            list?.let {
+                mList.clear()
+                mList.addAll(list)
+                mAdapter.notifyDataSetChanged()
             }
         }
 
