@@ -18,6 +18,27 @@ fun main() {
 ```
 fun 函数名（参数1：参数1类型...）:返回值（没有可用省略或者Unit）{
 }
+
+//参数可以有默认值
+fun main(args:Array<String>) {
+    desc()
+    desc(20)
+    desc(age = 21)
+    desc(name = "csl")
+    desc(22,"cc")
+    desc(age = 24,name = "ccc")
+}
+
+fun desc(age:Int = 23 ,name:String = "sl"){
+    println("name=$name and age=$age")
+}
+//输出
+name=sl and age=23
+name=sl and age=20
+name=sl and age=21
+name=csl and age=23
+name=cc and age=22
+name=ccc and age=24
 ```
 ### 变量
 变量定义可用使用var/val val定义的变量，只能为其赋值一次
@@ -188,6 +209,41 @@ var <propertyName>[: <PropertyType>] [= <property_initializer>]
 为处理这种情况，你可以用 ***lateinit*** 修饰符标记该属性
 
 #### 关键字 open & override
+### 数据类与密封类
+数据类
+```
+data class User(val name: String, val age: Int)
+```
+编译器会自动的从主构造函数中根据所有声明的属性提取以下函数：
+1. equals() / hashCode()
+2. toString() 格式如 "User(name=John, age=42)"
+3. componentN() functions 对应于属性，按声明顺序排列
+4. copy() 函数
+密封类
+密封类用来表示受限的类继承结构：当一个值为有限几种的类型, 而不能有任何其他类型时。在某种意义上，他们是枚举类的扩展：枚举类型的值集合 也是受限的，但每个枚举常量只存在一个实例，而密封类 的一个子类可以有可包含状态的多个实例。
+声明一个密封类，使用 sealed 修饰类，密封类可以有子类，但是所有的子类都必须要内嵌在密封类中。
+sealed 不能修饰 interface ,abstract class(会报 warning,但是不会出现编译错误)
+```
+fun main(args:Array<String>) {
+    val sL1 = SL.SL1("lin")
+    testSeal(sL1)
+}
+
+fun testSeal(sl: SL){
+    when(sl){
+        is SL.SL1-> println("sl1")
+        is SL.SL2-> println("sl2")
+    }
+}
+
+sealed class SL{
+    data class SL1(var name: String) : SL()
+    data class SL2(var age: Int) : SL()
+}
+输出
+sl1
+```
+
 ### 接口
 Kotlin 的接口可以既包含抽象方法的声明也包含实现。与抽象类不同的是，接口无法保存状态。它可以有属性但必须声明为抽象或提供访问器实现。
 
@@ -200,6 +256,7 @@ interface MyInterface {
     }
 }
 ```
+### 泛型 *T* *in* & *out*
 ### 可见性修饰符
 类、对象、接口、构造函数、方法、属性和它们的 setter 都可以有 可见性修饰符。 （getter 总是与属性有着相同的可见性。） 在 Kotlin 中有这四个可见性修饰符：private、 protected、 internal 和 public。 如果没有显式指定修饰符的话，默认可见性是 public。
 ### 扩展函数
@@ -239,6 +296,9 @@ fun main() {
 Hello,
 World!
 ```
+### 委托
+委托模式是软件设计模式中的一项基本技巧。在委托模式中，有两个对象参与处理同一个请求，接受请求的对象将请求委托给另一个对象来处理。
+Kotlin 直接支持委托模式，更加优雅，简洁。Kotlin 通过关键字 by 实现委托。
 
 
 
