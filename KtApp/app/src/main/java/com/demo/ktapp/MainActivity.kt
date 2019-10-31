@@ -10,6 +10,7 @@ import com.demo.ktapp.net.DataWrapper
 import com.demo.ktapp.net.getWanService
 import com.demo.ktapp.util.toast
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadArticles() {
         toast("开始加载数据")
-        getWanService().wxarticle().enqueue(object : Callback<DataWrapper<List<ArticleBean>>> {
+        /*getWanService().wxarticle().enqueue(object : Callback<DataWrapper<List<ArticleBean>>> {
             override fun onResponse(
                 call: Call<DataWrapper<List<ArticleBean>>>,
                 response: Response<DataWrapper<List<ArticleBean>>>
@@ -64,6 +65,31 @@ class MainActivity : AppCompatActivity() {
                 toast(t.message ?: "")
             }
 
-        })
+        })*/
+       /* GlobalScope.launch {
+
+        }*/
+
+        /*runBlocking {
+
+        }*/
+
+        runBlocking {
+            launch {
+                val articlse = getArticlse()
+                toast("加载成功")
+                articlse?.let {
+                    mList.clear()
+                    mList.addAll(articlse)
+                    mAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+    }
+
+    suspend fun getArticlse()= withContext(Dispatchers.IO){
+        val response = getWanService().wxarticle().execute()
+        return@withContext response.body()?.data
     }
 }
